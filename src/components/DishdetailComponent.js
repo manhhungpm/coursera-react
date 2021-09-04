@@ -14,6 +14,7 @@ import {
 } from "reactstrap";
 import {Control, Errors, LocalForm} from "react-redux-form";
 
+import {Loading} from './LoadingComponent';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -48,9 +49,10 @@ class CommentForm extends Component {
     render() {
         return (
             <div>
-                <Button outline onClick={this.toggleModal}><span className="fa fa-pencil fa-lg"></span> Submit Comment</Button>
+                <Button outline onClick={this.toggleModal}><span className="fa fa-pencil fa-lg"></span> Submit
+                    Comment</Button>
 
-                <Modal  isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
                     <ModalBody>
                         <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
@@ -142,7 +144,7 @@ function RenderComments({comments, addComment, dishId}) {
 
         return (<div>
             {listCmt}
-            <CommentForm dishId={dishId} addComment={addComment} />
+            <CommentForm dishId={dishId} addComment={addComment}/>
         </div>)
     } else
         return (
@@ -163,7 +165,23 @@ function RenderDish({dish}) {
 }
 
 const DishDetail = (props) => {
-    if (props.dish != null) {
+    if (props.isLoading) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading/>
+                </div>
+            </div>
+        );
+    } else if (props.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    } else if (props.dish != null) {
         return (
             <div className="container">
                 <div className="row">
